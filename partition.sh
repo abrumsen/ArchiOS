@@ -1,42 +1,14 @@
 #!/bin/bash
 
-# Prerequisites:
-# 1. A user other than root: # useradd -m -G users,wheel <username>
-# 2. A password set both for root and your user: # passwd
-# 3. A running SSH service for QoL: # /etc/init.d/sshd start
-
-# Usage:
-# 1. Transfer this script to your virtual machine: 
-## scp partition.sh $USER@VM_IP:/home/$USER (from host machine)
-## OR
-## curl -o /home/$USER https://raw.githubusercontent.com/StealYourCode/ArchOs/refs/heads/main/Gentoo/partition.sh
-# 2. Give execute permissions : chmod +x partition.sh
-
-# This script will then do the rest of Lesson 1 for you,
-# When it has finished running you will be able to chroot to your gentoo installation:
-## chroot /mnt/gentoo /bin/bash
-## source /etc/profile
-## export PS1="(chroot) ${PS1}"
-
-
 # Ensure we are running as root
 if [ "$EUID" -ne 0 ]; then
   echo "Please run as root"
   exit 1
 fi
 
-
-# Check if the username is provided as an argument
-if [ -z "$1" ]; then
-  echo "Error: No username provided."
-  echo "Usage (as root): ./partition.sh <username>"
-  exit 1
-fi
-
-USER="$1"
 DISK="/dev/sda"
 
-STAGE3_TARBALL=$(find /home/$USER -name "stage3*.tar.xz" -print -quit)
+STAGE3_TARBALL=$(find /root -name "stage3*.tar.xz" -print -quit)
 
 # Clean up function to unmount partitions and disable swap
 cleanup() {
@@ -146,7 +118,7 @@ echo "Partitions mounted and swap enabled."
 echo "Preparing for Gentoo installation..."
 
 if [ -z "$STAGE3_TARBALL" ]; then
-  echo "Stage3 tarball not found in /home/$USER. Downloading..."
+  echo "Stage3 tarball not found in /root. Downloading..."
   # Determine latest stage 3
   STAGE3_FILENAME=$(curl -s "https://gentoo.osuosl.org/releases/amd64/autobuilds/current-stage3-amd64-systemd/latest-stage3-amd64-systemd.txt" | grep stage3-amd64-systemd-* | cut -d " " -f 1)
   STAGE3_URL="https://gentoo.osuosl.org/releases/amd64/autobuilds/current-stage3-amd64-systemd/$STAGE3_FILENAME"
