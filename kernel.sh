@@ -39,7 +39,7 @@ emerge sys-apps/pciutils sys-apps/usbutils  # Install PCI and USB utilities
 # INSTALL KERNEL MODULES
 echo "Installing Gentoo kernel sources..."
 emerge sys-kernel/gentoo-sources
-kernel_version=$(ls -l /usr/src/ | grep linux-)
+kernel_version=$(ls /usr/src/ | grep linux-)
 
 # CONFIGURE AND COMPILE KERNEL
 echo "Getting kernel config file..."
