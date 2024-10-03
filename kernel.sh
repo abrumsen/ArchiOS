@@ -7,6 +7,8 @@ if [ "$EUID" -ne 0 ]; then
   exit 1
 fi
 
+CONFIG_URL="https://raw.githubusercontent.com/abrumsen/ArchiOS/refs/heads/main/.config"
+
 # Switch to chroot environment
 chroot /mnt/gentoo /bin/bash 
 source /etc/profile
@@ -41,7 +43,7 @@ kernel_version=$(ls -l /usr/src/ | grep linux-)
 
 # CONFIGURE AND COMPILE KERNEL
 echo "Getting kernel config file..."
-curl -o "/usr/src/$kernel_version" ""
+curl -o "/usr/src/$kernel_version" "$CONFIG_URL"
 
 
 # Compile kernel and install modules
