@@ -80,10 +80,10 @@ if blkid "${DISK}4" | grep -q "ext4"; then
   echo "Warning: ${DISK}4 already has an ext4 filesystem."
   read -p "Do you want to reformat the Root partition? (y/n): " choice
   if [ "$choice" == "y" ]; then
-    mkfs.ext4 "${DISK}4"
+    mkfs.ext4 -T small "${DISK}4"
   fi
 else
-  mkfs.ext4 "${DISK}4"
+  mkfs.ext4 -T small "${DISK}4"
 fi
 
 # MyLinux partition
